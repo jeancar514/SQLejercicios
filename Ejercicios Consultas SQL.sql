@@ -207,3 +207,56 @@ SELECT nombre, precio
 FROM producto
 WHERE (precio >=  180 ) 
 ORDER BY precio DESC , nombre ASC;
+
+/*--- 1.1.4 Consultas multitabla (Composición interna) -*/
+
+/* ejercicio 1.1.4 -> 1 */
+SELECT prod.nombre , prod.precio , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo;
+
+/* ejercicio 1.1.4 -> 2 */
+SELECT prod.nombre , prod.precio , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+ORDER BY fab.nombre ASC;
+
+/* ejercicio 1.1.4 -> 3 */
+SELECT prod.codigo ,prod.nombre , fab.codigo, fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo;
+
+/* ejercicio 1.1.4 -> 4 */
+SELECT prod.nombre , prod.precio , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+ORDER BY prod.precio ASC
+LIMIT 1;
+
+/* ejercicio 1.1.4 -> 5 */
+SELECT prod.nombre , prod.precio , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+ORDER BY prod.precio DESC
+LIMIT 1;
+
+/* ejercicio 1.1.4 -> 6 */
+SELECT prod
+FROM producto AS prod ,fabricante AS fab 
+WHERE (prod.codigo_fabricante = fab.codigo) AND (fabricante.nombre = 'Lenovo');
+
+SELECT prod.nombre , prod.precio , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE
+
+/* ejercicio 1.1.4 -> 7 */
+SELECT prod
+FROM producto AS prod ,fabricante AS fab 
+WHERE (prod.codigo_fabricante = fab.codigo) AND (fabricante.nombre = 'Lenovo');
