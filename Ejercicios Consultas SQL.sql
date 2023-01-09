@@ -372,6 +372,51 @@ ORDER BY prod.precio DESC
 LIMIT 1;
 
 /* ejercicio 1.1.6 -> 9 */
-SELECT sum( prod.precio )
-FROM producto AS prod  
+SELECT sum( prod.precio ) AS suma_de_precios
+FROM producto AS prod ;
 
+/* ejercicio 1.1.6 -> 10 */
+SELECT  count( prod.precio ) AS cantidad_asus
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE fab.nombre = 'Asus';
+
+/* ejercicio 1.1.6 -> 11 */
+SELECT  AVG( prod.precio ) AS media_asus
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE fab.nombre = 'Asus';
+
+/* ejercicio 1.1.6 -> 12 */
+SELECT  prod.* , fab.nombre
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE fab.nombre = 'Asus'
+ORDER BY  prod.precio ASC
+LIMIT 1;
+
+/* ejercicio 1.1.6 -> 13 */
+SELECT  prod.* , fab.nombre
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE fab.nombre = 'Asus'
+ORDER BY  prod.precio DESC
+LIMIT 1;
+
+/* ejercicio 1.1.6 -> 14 */
+SELECT  sum( prod.precio ) AS suma_de_precios_asus
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE fab.nombre = 'Asus';
+
+/* ejercicio 1.1.6 -> 15 */
+SELECT prod.nombre, max(prod.precio) AS precio_máximo, min(prod.precio) AS precio_minimo, AVG(prod.precio) AS precio_medio , count(prod.precio) AS cantidad_crucial
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE fab.nombre = 'Crucial';
