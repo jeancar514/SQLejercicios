@@ -253,10 +253,125 @@ WHERE (prod.codigo_fabricante = fab.codigo) AND (fabricante.nombre = 'Lenovo');
 SELECT prod.nombre , prod.precio , fab.nombre
 FROM producto As prod
 INNER JOIN fabricante As fab
-ON  prod.codigo_fabricante = fab.codigo
-WHERE
+ON  (prod.codigo_fabricante = fab.codigo) AND (fabricante.nombre = 'Lenovo');
 
 /* ejercicio 1.1.4 -> 7 */
-SELECT prod
+SELECT prod.*
 FROM producto AS prod ,fabricante AS fab 
-WHERE (prod.codigo_fabricante = fab.codigo) AND (fabricante.nombre = 'Lenovo');
+WHERE (prod.codigo_fabricante = fab.codigo) AND (prod.precio > 200) AND (fab.nombre = 'Crucial');
+
+SELECT prod.nombre , prod.precio , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  (prod.codigo_fabricante = fab.codigo) AND (prod.precio > 200) AND (fab.nombre = 'Crucial');
+
+
+/* ejercicio 1.1.4 -> 8 */
+SELECT prod.* , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  (prod.codigo_fabricante = fab.codigo) AND ( (fab.nombre = 'Asus') OR (fab.nombre = 'Hewlett-Packard') OR (fab.nombre = 'Seagate'));
+
+
+/* ejercicio 1.1.4 -> 9 */
+SELECT prod.* , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  (prod.codigo_fabricante = fab.codigo) AND ( fab.nombre IN('Asus','Hewlett-Packard','Seagate'));
+
+/* ejercicio 1.1.4 -> 10 */
+SELECT prod.* 
+FROM producto As prod
+WHERE substr(prod.nombre,length(prod.nombre),length(prod.nombre)) = 'e';
+
+/* ejercicio 1.1.4 -> 11 */
+SELECT prod.* , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  (prod.codigo_fabricante = fab.codigo) AND (prod.nombre LIKE '%w%'));
+
+
+/* ejercicio 1.1.4 -> 12 */
+SELECT prod.* , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  (prod.codigo_fabricante = fab.codigo) AND (prod.precio >= 180)
+ORDER BY prod.precio DESC, prod.nombre ASC;
+
+/* ejercicio 1.1.4 -> 13 */
+SELECT  DISTINCT fab.codigo , fab.nombre
+FROM producto As prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo;
+
+/*--- 1.1.5 Consultas multitabla (Composición externa) -*/
+
+/* ejercicio 1.1.5 -> 1 */
+SELECT  DISTINCT fab.*, prod.*
+FROM producto As prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo;
+
+/* ejercicio 1.1.5 -> 2 */
+SELECT  DISTINCT fab.*, prod.*
+FROM producto As prod
+RIGHT JOIN fabricante As fab
+ON  (prod.codigo_fabricante = fab.codigo)
+WHERE  prod.codigo_fabricante IS NULL;
+
+/* ejercicio 1.1.5 -> 3 */
+
+/* no puede haber productos que no esten destinado a ningun fabricante , pero si puede haber fabricante
+		que no tengan ningun producto en este momento */ 
+
+
+/*--- 1.1.6 Consultas resumen -*/
+
+/* ejercicio 1.1.6 -> 1 */
+SELECT  count(*)
+FROM producto ;
+
+/* ejercicio 1.1.6 -> 2 */
+SELECT  count(*)
+FROM fabricante ;
+
+
+/* ejercicio 1.1.6 -> 3 */
+SELECT  DISTINCT count(fab.*)
+FROM producto As prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.codigo_fabricante IS NOT NULL;
+
+/* ejercicio 1.1.6 -> 4 */
+SELECT  AVG(prod.precio)
+FROM producto As prod;
+
+/* ejercicio 1.1.6 -> 5 */
+SELECT prod.*
+FROM producto AS prod  
+ORDER BY prod.precio ASC
+LIMIT 1;
+
+/* ejercicio 1.1.6 -> 6 */
+SELECT prod.*
+FROM producto AS prod  
+ORDER BY prod.precio DESC
+LIMIT 1;
+
+/* ejercicio 1.1.6 -> 7 */
+SELECT prod.nombre , prod.precio
+FROM producto AS prod  
+ORDER BY prod.precio ASC
+LIMIT 1;
+
+/* ejercicio 1.1.6 -> 8 */
+SELECT prod.nombre , prod.precio
+FROM producto AS prod  
+ORDER BY prod.precio DESC
+LIMIT 1;
+
+/* ejercicio 1.1.6 -> 9 */
+SELECT sum( prod.precio )
+FROM producto AS prod  
+
