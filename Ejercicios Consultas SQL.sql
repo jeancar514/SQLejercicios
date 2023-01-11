@@ -518,3 +518,247 @@ ON  prod.codigo_fabricante = fab.codigo
 WHERE prod.precio < 220
 GROUP BY fab.codigo)
 ORDER BY 2 DESC;
+
+/* ejercicio 1.1.6 -> 28 */
+SELECT fab.nombre, sum(prod.precio) AS precio_suma  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo
+HAVING sum(prod.precio) >= 1000;
+
+/* ejercicio 1.1.6 -> 29 */
+SELECT prod.nombre AS nombre_producto, prod.precio AS precio_maximo,  fab.nombre AS nombre_producto
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.precio = (
+	SELECT  max(prod.precio) 
+	FROM producto AS prod
+	WHERE prod.codigo_fabricante fab.codigo
+)
+
+/*   --- Subconsultas (En la cláusula WHERE)  --  */
+/*      1.1.7.1 Con operadores básicos de comparación      */
+
+/* ejercicio 1.1.7 -> 1 */
+SELECT prod.*
+FROM producto AS prod
+WHERE prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Lenovo'	
+);
+
+/* ejercicio 1.1.7 -> 2 */
+SELECT prod.*
+FROM producto AS prod
+WHERE prod.precio = 
+(
+SELECT max(prod.precio)
+FROM producto AS prod
+WHERE prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Lenovo'	)
+);
+
+/* ejercicio 1.1.7 -> 3 */
+SELECT prod.nombre
+FROM producto AS prod
+WHERE prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Lenovo'	
+) AND prod.precio = 
+(
+SELECT max(prod.precio)
+FROM producto AS prod
+WHERE prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Lenovo'	)
+);
+
+/* ejercicio 1.1.7 -> 4 */
+SELECT prod.nombre
+FROM producto AS prod
+WHERE prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Hewlett-Packard'	
+) AND prod.precio = 
+(
+SELECT min(prod.precio)
+FROM producto AS prod
+WHERE prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Hewlett-Packard'	)
+);
+
+/* ejercicio 1.1.7 -> 5 */
+SELECT prod.*
+FROM producto AS prod
+WHERE prod.precio >= 
+(
+SELECT max(prod.precio)
+FROM producto AS prod
+WHERE prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Lenovo'	)
+);
+
+/* ejercicio 1.1.7 -> 6 */
+SELECT prod.*
+FROM producto AS prod
+WHERE prod.precio >= 
+(
+SELECT AVG(prod.precio)
+FROM producto AS prod
+WHERE prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Asus')
+) AND prod.codigo_fabricante = (
+	SELECT fab.codigo
+	FROM fabricante AS fab 
+	WHERE fab.nombre = 'Asus'
+);
+
+/*  1.1.7.2 Subconsultas con ALL y ANY  */
+
+/* ejercicio 1.1.7 -> 8 */
+
+SELECT * FROM producto
+WHERE precio >= ALL(
+	SELECT precio
+	FROM producto
+);
+
+/* ejercicio 1.1.7 -> 9 */
+SELECT * FROM producto
+WHERE precio <= ALL(
+	SELECT precio
+	FROM producto
+);
+
+/* ejercicio 1.1.7 -> 10 */
+SELECT * 
+FROM fabricante AS fab
+WHERE fab.codigo = ANY(
+	SELECT prod.codigo_fabricante
+	FROM producto AS prod
+);
+
+/* ejercicio 1.1.7 -> 11 */
+SELECT * 
+FROM fabricante AS fab
+WHERE NOT(
+	fab.codigo = ANY(
+	SELECT prod.codigo_fabricante
+	FROM producto AS prod
+	)
+);
+
+/* 1.1.7.3 Subconsultas con IN y NOT IN */
+
+/* ejercicio 1.1.7 -> 12 */
+SELECT * 
+FROM fabricante AS fab
+WHERE fab.codigo  IN(
+	SELECT prod.codigo_fabricante
+	FROM producto AS prod
+);
+
+/* ejercicio 1.1.7 -> 13 */
+SELECT * 
+FROM fabricante AS fab
+WHERE fab.codigo NOT IN(
+	SELECT prod.codigo_fabricante
+	FROM producto AS prod
+);
+
+/* 1.1.7.4 Subconsultas con EXISTS y NOT EXISTS */
+
+/* ejercicio 1.1.7 -> 14 */
+SELECT * 
+FROM fabricante AS fab
+WHERE  EXISTS(
+	SELECT prod.codigo_fabricante
+	FROM producto AS prod
+	WHERE fab.codigo = prod.codigo_fabricante
+);
+
+/* ejercicio 1.1.7 -> 15 */
+SELECT * 
+FROM fabricante AS fab
+WHERE NOT EXISTS(
+	SELECT prod.codigo_fabricante
+	FROM producto AS prod
+	WHERE fab.codigo = prod.codigo_fabricante
+);
+
+/* 1.1.7.5 Subconsultas correlacionadas */
+
+/* ejercicio 1.1.7 -> 16 */
+
+SELECT fab.nombre ,  prod.nombre , prod.precio
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.precio = (
+	SELECT max(prod.precio)
+	FROM producto AS prod
+	WHERE prod.codigo_fabricante = fab.codigo
+);
+
+/* ejercicio 1.1.7 -> 17 */
+SELECT fab.nombre ,  prod.nombre , prod.precio
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.precio >= (
+	SELECT AVG(prod.precio)
+	FROM producto AS prod
+	WHERE prod.codigo_fabricante = fab.codigo
+);
+
+/* ejercicio 1.1.7 -> 18 */
+SELECT fab.nombre ,  prod.nombre , prod.precio
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.precio = (
+	SELECT max(prod.precio)
+	FROM producto AS prod
+	WHERE  (prod.codigo_fabricante = fab.codigo) AND (fab.nombre = 'Lenovo')
+);
+
+SELECT fab.nombre ,  prod.nombre , prod.precio
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE (fab.nombre = 'Lenovo') AND prod.precio = (
+	SELECT max(prod.precio)
+	FROM producto AS prod
+	WHERE  (prod.codigo_fabricante = fab.codigo) 
+);
+
+/*  1.1.8 Subconsultas (En la cláusula HAVING)   */
+
+/* ejercicio 1.1.8 -> 7 */
+
+SELECT fab.nombre, count(prod.*) AS numero_productos  
+FROM producto AS prod
+INNER JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo 
+HAVING count(prod.*) >= (
+	SELECT count(prod.*)
+	FROM producto AS prod
+	INNER JOIN fabricante As fab
+	ON  prod.codigo_fabricante = fab.codigo
+	WHERE fab.nombre = 'Lenovo'
+);
