@@ -420,3 +420,101 @@ FROM producto AS prod
 INNER JOIN fabricante As fab
 ON  prod.codigo_fabricante = fab.codigo
 WHERE fab.nombre = 'Crucial';
+
+/* ejercicio 1.1.6 -> 16 */
+SELECT fab.nombre , count(prod.codigo) AS cantidad_de_productos 
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo
+ORDER BY count(prod.codigo) DESC;
+
+/* ejercicio 1.1.6 -> 17 */
+SELECT fab.nombre, max(prod.precio) AS precio_máximo, min(prod.precio) AS precio_minimo, AVG(prod.precio) AS precio_medio  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo;
+
+/* ejercicio 1.1.6 -> 18 */
+SELECT fab.nombre, count(prod.codigo) AS cantidad_de_productos , max(prod.precio) AS precio_máximo, min(prod.precio) AS precio_minimo, AVG(prod.precio) AS precio_medio 
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo
+HAVING AVG(prod.precio) >= 200;
+
+/* ejercicio 1.1.6 -> 19 */
+SELECT fab.nombre, count(prod.codigo) AS cantidad_de_productos , max(prod.precio) AS precio_máximo, min(prod.precio) AS precio_minimo, AVG(prod.precio) AS precio_medio 
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo
+HAVING AVG(prod.precio) >= 200;
+
+/* ejercicio 1.1.6 -> 20 */
+SELECT count(prod.codigo) AS cantidad_de_productos 
+FROM producto AS prod
+WHERE prod.precio >= 180;
+
+/* ejercicio 1.1.6 -> 21 */
+SELECT fab.nombre, count(prod.codigo) AS cantidad_de_productos  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.precio >= 180
+GROUP BY fab.codigo; 
+
+/* ejercicio 1.1.6 -> 22 */
+SELECT fab.codigo, AVG(prod.precio) AS precio_medio  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo; 
+
+/* ejercicio 1.1.6 -> 23 */
+SELECT fab.nombre, AVG(prod.precio) AS precio_medio  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo; 
+
+/* ejercicio 1.1.6 -> 24 */
+SELECT fab.nombre, AVG(prod.precio) AS precio_medio  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo 
+HAVING AVG(prod.precio) >= 150;
+
+/* ejercicio 1.1.6 -> 25 */
+SELECT fab.nombre, count(prod.*) AS numero_productos  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+GROUP BY fab.codigo 
+HAVING count(prod.*) >= 2;
+
+/* ejercicio 1.1.6 -> 26 */
+SELECT fab.nombre, count(prod.*) AS numero_productos   
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.precio >= 220
+GROUP BY fab.codigo; 
+
+/* ejercicio 1.1.6 -> 27 */
+(SELECT fab.nombre, count(prod.*) AS precio_medio  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.precio >= 220
+GROUP BY fab.codigo)
+UNION
+(SELECT fab.nombre, 0 AS precio_medio  
+FROM producto AS prod
+RIGHT JOIN fabricante As fab
+ON  prod.codigo_fabricante = fab.codigo
+WHERE prod.precio < 220
+GROUP BY fab.codigo)
+ORDER BY 2 DESC;
