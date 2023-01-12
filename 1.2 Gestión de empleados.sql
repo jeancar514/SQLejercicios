@@ -94,12 +94,12 @@ SELECT dep.nombre AS nombre , (dep.presupuesto - dep.gastos) AS presupuesto_actu
 FROM departamento AS dep
 ORDER BY (dep.presupuesto - dep.gastos) ASC;
 
-/* ejercicio 1.2.3 -> 12 */
+/* ejercicio 1.2.3 -> 13 */
 SELECT dep.nombre AS nombre 
 FROM departamento AS dep
 ORDER BY dep.nombre ASC; 
 
-/* ejercicio 1.2.3 -> 13 */
+/* ejercicio 1.2.3 -> 14 */
 SELECT dep.nombre AS nombre 
 FROM departamento AS dep
 ORDER BY dep.nombre DESC;  
@@ -108,3 +108,139 @@ ORDER BY dep.nombre DESC;
 SELECT  CONCAT( emp.apellido1,' ', emp.apellido2 , ' ',emp.nombre) 
 FROM empleado AS emp
 ORDER BY CONCAT( emp.apellido1, emp.apellido2,emp.nombre) ASC;
+
+/* ejercicio 1.2.3 -> 16 */
+SELECT dep.nombre AS nombre , dep.presupuesto AS presupuesto 
+FROM departamento AS dep
+ORDER BY dep.presupuesto DESC
+LIMIT 3; 
+
+/* ejercicio 1.2.3 -> 17 */
+SELECT dep.nombre AS nombre , dep.presupuesto AS presupuesto 
+FROM departamento AS dep
+ORDER BY dep.presupuesto ASC
+LIMIT 3; 
+
+/* ejercicio 1.2.3 -> 18 */
+SELECT dep.nombre AS nombre , dep.gastos AS gastos 
+FROM departamento AS dep
+ORDER BY dep.gastos DESC
+LIMIT 2; 
+
+/* ejercicio 1.2.3 -> 19 */
+SELECT dep.nombre AS nombre , dep.gastos AS gastos 
+FROM departamento AS dep
+ORDER BY dep.gastos ASC
+LIMIT 2;
+
+/* ejercicio 1.2.3 -> 20 */
+SELECT emp.* 
+FROM empleado AS emp
+LIMIT 2 OFFSET 3;
+
+/* ejercicio 1.2.3 -> 21 */
+SELECT dep.nombre , dep.presupuesto
+FROM departamento AS dep
+WHERE dep.presupuesto >= 150000;
+
+/* ejercicio 1.2.3 -> 22 */
+SELECT dep.nombre , dep.gastos
+FROM departamento AS dep
+WHERE dep.gastos <= 5000;
+
+/* ejercicio 1.2.3 -> 23 */
+SELECT dep.nombre , dep.presupuesto
+FROM departamento AS dep
+WHERE (dep.presupuesto >= 100000) AND (dep.presupuesto <= 200000);
+
+/* ejercicio 1.2.3 -> 24 */
+SELECT dep.nombre , dep.presupuesto
+FROM departamento AS dep
+WHERE NOT((dep.presupuesto >= 100000) AND (dep.presupuesto <= 200000));
+
+/* ejercicio 1.2.3 -> 25 */
+SELECT dep.nombre , dep.presupuesto
+FROM departamento AS dep
+WHERE dep.presupuesto BETWEEN  100000 AND  200000;
+
+/* ejercicio 1.2.3 -> 26 */
+SELECT dep.nombre , dep.presupuesto
+FROM departamento AS dep
+WHERE  NOT (dep.presupuesto BETWEEN  100000 AND  200000);
+
+/* ejercicio 1.2.3 -> 27 */
+SELECT dep.nombre , dep.presupuesto , dep.gastos
+FROM departamento AS dep
+WHERE  dep.gastos > dep.presupuesto;
+
+/* ejercicio 1.2.3 -> 28 */
+SELECT dep.nombre , dep.presupuesto , dep.gastos
+FROM departamento AS dep
+WHERE  dep.gastos < dep.presupuesto;
+
+/* ejercicio 1.2.3 -> 29 */
+SELECT dep.nombre , dep.presupuesto , dep.gastos
+FROM departamento AS dep
+WHERE  dep.gastos = dep.presupuesto;
+
+/* ejercicio 1.2.3 -> 30 */
+SELECT emp.*
+FROM empleado AS emp
+WHERE emp.apellido2 IS NULL;
+
+/* ejercicio 1.2.3 -> 31 */
+SELECT emp.*
+FROM empleado AS emp
+WHERE emp.apellido2 IS NOT NULL;
+
+/* ejercicio 1.2.3 -> 32 */
+SELECT emp.*
+FROM empleado AS emp
+WHERE emp.apellido2 = 'López';
+
+SELECT emp.*
+FROM empleado AS emp
+WHERE emp.apellido2 LIKE '%López%';
+
+/* ejercicio 1.2.3 -> 33 */
+SELECT emp.*
+FROM empleado AS emp
+WHERE (emp.apellido2 = 'Díaz') OR (emp.apellido2 = 'Moreno');
+
+SELECT emp.*
+FROM empleado AS emp
+WHERE (emp.apellido2 LIKE '%López%') OR (emp.apellido2 LIKE '%Moreno%');
+
+/* ejercicio 1.2.3 -> 34 */
+SELECT emp.*
+FROM empleado AS emp
+WHERE  emp.apellido2 IN ('López', 'Moreno');
+
+/* ejercicio 1.2.3 -> 35 */
+SELECT emp.nif,  emp.nombre, emp.apellido1, emp.apellido2, emp.id_departamento
+FROM empleado AS emp
+WHERE  emp.id_departamento = 3;
+
+/* ejercicio 1.2.3 -> 36 */
+SELECT emp.nif,  emp.nombre, emp.apellido1, emp.apellido2, emp.id_departamento
+FROM empleado AS emp
+WHERE  emp.id_departamento IN(2,4,5);
+
+/*  1.2.4 Consultas multitabla (Composición interna)  */
+
+/* ejercicio 1.2.4 -> 1 */
+SELECT *
+FROM empleado AS emp , departamento AS dep
+WHERE emp.id_departamento = dep.id;
+
+
+/* ejercicio 1.2.4 -> 2 */
+SELECT dep.* , CONCAT(emp.nombre, emp.apellido1, emp.apellido2)
+FROM empleado AS emp , departamento AS dep
+WHERE emp.id_departamento = dep.id
+ORDER BY dep.nombre ASC, CONCAT(emp.nombre,' ',emp.apellido1,' ',emp.apellido2) ASC;
+
+/* ejercicio 1.2.4 -> 3 */
+SELECT DISTINCT dep.id , dep.nombre
+FROM empleado AS emp , departamento AS dep
+WHERE emp.id_departamento = dep.id
