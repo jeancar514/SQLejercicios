@@ -67,20 +67,44 @@ FROM empleado AS emp;
 
 /* ejercicio 1.2.3 -> 6 */
 SELECT  DISTINCT  emp.id
-FROM empleado As emp;
+FROM empleado AS emp;
 
 /* ejercicio 1.2.3 -> 7 */
-SELECT  CONCAT(emp.nombre, emp.apellido1, emp.apellido2)  
-FROM empleado As emp;
+SELECT  CONCAT(emp.nombre,' ', emp.apellido1,' ', emp.apellido2)  
+FROM empleado AS emp;
 
 /* ejercicio 1.2.3 -> 8 */
-SELECT upper(CONCAT(emp.nombre, emp.apellido1, emp.apellido2))
-FROM empleado;
+SELECT upper(CONCAT(emp.nombre ,' ', emp.apellido1,' ',emp.apellido2))
+FROM empleado AS emp;
 
 /* ejercicio 1.2.3 -> 9 */
-SELECT lower(CONCAT(emp.nombre, emp.apellido1, emp.apellido2))
-FROM empleado;
+SELECT lower(CONCAT(emp.nombre,' ', emp.apellido1,' ', emp.apellido2))
+FROM empleado AS emp;
 
 /* ejercicio 1.2.3 -> 10 */
-SELECT emp.id, emp.nif
-FROM empleado;
+SELECT emp.id,emp.nif, regexp_replace(regexp_replace(emp.nif,'([^0-9])',''),'([^0-9])','') AS digitos, regexp_replace(emp.nif, '[^a-zA-Z]', '', 'g') AS letras
+FROM empleado AS emp;
+
+/* ejercicio 1.2.3 -> 11 */
+SELECT dep.nombre AS nombre , dep.presupuesto AS  presupuesto, dep.gastos AS gastos, (dep.presupuesto - dep.gastos) AS presupuesto_actual
+FROM departamento AS dep;
+
+/* ejercicio 1.2.3 -> 12 */
+SELECT dep.nombre AS nombre , (dep.presupuesto - dep.gastos) AS presupuesto_actual
+FROM departamento AS dep
+ORDER BY (dep.presupuesto - dep.gastos) ASC;
+
+/* ejercicio 1.2.3 -> 12 */
+SELECT dep.nombre AS nombre 
+FROM departamento AS dep
+ORDER BY dep.nombre ASC; 
+
+/* ejercicio 1.2.3 -> 13 */
+SELECT dep.nombre AS nombre 
+FROM departamento AS dep
+ORDER BY dep.nombre DESC;  
+
+/* ejercicio 1.2.3 -> 15 */
+SELECT  CONCAT( emp.apellido1,' ', emp.apellido2 , ' ',emp.nombre) 
+FROM empleado AS emp
+ORDER BY CONCAT( emp.apellido1, emp.apellido2,emp.nombre) ASC;
